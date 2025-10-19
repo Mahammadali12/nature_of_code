@@ -1,74 +1,90 @@
+let walker;
+
 function setup() {
   createCanvas(600, 400);
-
+  // createCapture(VIDEO)
   walker = new Walker();
-  
-  background(255);
+  loadPixels();
+  background(51);
 }
 
-
-let t =0;
+let startX = 0;
+let startY = 10000;
+let t = 0;
 function draw() {
-  walker.show();
-  walker.step();
-  t+=0.01;
+  walker.step()
+  walker.show()
 }
+
 
 
 class Walker {
-
-  constructor(parameters) {
-    this.x = width / 2;
-    this.y = height / 2;
-
+  constructor() {
+    this.x = width/2;
+    this.y = height/2;
+    this.oldX = this.x;
+    this.oldY = this.y;
+    this.tX = 0;
+    this.tY = 10000;
   }
 
-  show (){
-    stroke(204,102,0);
-    // fill(204,102,0);
-    point(this.x, this.y);
-    
+  show() {
+    // let x = getXvalue();
+    // let y = getYvalue();
+    // let oldX = x;
+    // let oldY = y;
+    // // circle(getXvalue(),getYvalue(),16);
+    // this.oldX = this.x;
+    // this.oldY = this.y;
   }
+  
   step() {
 
-    // if (random(1) > 0.5) {
-    //   if (this.x < mouseX) {
-    //     this.x++;
-    //   }else
-    //   {
-    //     this.x--;
-    //   }
+    let xOff = startX
+    for (let x = 0; x < width; x++) {
+      let yOff = startY
+      for (let y = 0; y < height; y++) {
+        let index = (x+y*width)*4
+        let brightness = map(noise(xOff,yOff,t),0,1,0,255)
+        noiseDetail(6,0.5)
 
-    //   if (this.y < mouseY) {
-    //     this.y++;
-    //   }else
-    //   {
-    //     this.y--;
-    //   }
+        pixels[index] = brightness
+        pixels[index+1] = brightness
+        pixels[index+2] = brightness
+        pixels[index+3] = 255
+        
+        yOff += 0.01;        
+      }
+      xOff += 0.01;
+    }
+    t += 0.01
+    // startY +=0.1;
+    // startX +=0.1
+      updatePixels();
 
+    // noLoop()
+    // this.x += map(noise(this.tX),0,1,-1,1);
+    // this.y += map(noise(this.tY),0,1,-1,1);
 
-    //   rect(100,100)
-    // } 
-    // else
-    // {
+    // this.tX += 0.01;
+    // this.tY += 0.01;
+    
+  }
 
+  // getXvalue(params) {
+  //   let n = noise(tX);
+  //   let x = map(n,0,1,-1,1);
 
-    // let xstep = floor(random(5)) - 1;
-    // let ystep = floor(random(5)) - 1;
-
-    // if (xstep > 1) {
-    //   xstep = 1
-    // }
-    // if (ystep > 1) {
-    //   ystep = 1
-    // }
-
-    // this.x += xstep;
-    // this.y += ystep;
-  //   rect(100,100)
+  //   tX +=0.01;
+  //   return x;
   // }
 
 
-  } 
-}
+  // getYvalue(params) {
+  //   let n = noise(tY);
+  //   let y = map(n,0,1,-1,1);
 
+  //   tY +=0.01;
+  //   return y;
+  // }
+}
