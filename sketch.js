@@ -1,59 +1,30 @@
 let land;
+let tri;
 let theta = 0;
 
 
 function setup() {
-  createCanvas(640, 400, WEBGL);
-  land = new terrain(20, 800, 400);
+  createCanvas(600, 400, WEBGL);
+  land = new terrain(20, 400, 400);
+  tri = new Triangle(20);
   // noFill();
 }
 
 function draw() {
-  land.calculate();
+  // land.calculate();
   background(230);
   push();
   translate(-width/2, -height/2, -300);
-  rotateX(PI / 3);
-  rotateZ(theta);
+  rotateX(PI / 3); 
+  // rotateZ(theta);
+  line(-400/40,-400/40,370,370);
   land.render();
+  tri.render();
   pop();
   theta += 0.0025;
 
 
-}  
-
-// let scaleFactor = 20;
-// let start = 0
-// let xOff = 0;
-// let yOff = start;
-// function draw() {
-//   background(51);
-
-  
-//   rotateX(PI/3);                   // tilt the “floor”
-//   rotateZ( frameCount * 0.005);     // spin around vertical axis maybe
-
-//   let rows = floor((height) / scaleFactor);  // approximate because WEBGL origin is center
-//   let cols = floor((width) / scaleFactor);
-
-//   yOff = start
-//   for (let y = 0; y < rows - 1; y++) {
-//     xOff = 0
-//     beginShape(TRIANGLE_STRIP);
-//     for (let x = 0; x < cols; x++) {
-//       // vertex(x * scaleFactor - width/2,   y * scaleFactor - height/2);
-//       // vertex(x * scaleFactor - width/2,  (y + 1) * scaleFactor - height/2);
-//       vertex(x * scaleFactor - width/2,   y * scaleFactor - height/2,map(noise(xOff,yOff),0,1,-50,50));
-//       vertex(x * scaleFactor - width/2,  (y + 1) * scaleFactor - height/2, map(noise(xOff,yOff),0,1,-50,-50));
-//       xOff += 0.1
-//     }
-//     yOff += 0.1
-//     endShape();
-//   }
-//   start += 0.01
-// }
-
-
+}
 
 class terrain {
 
@@ -98,11 +69,76 @@ class terrain {
         stroke(0);
         let xPos = x * this.scl - (this.rows) / 2;
         let yPos = y * this.scl - (this.columns) / 2;
-        vertex(xPos, yPos, this.z[x][y]);
-        vertex(xPos + this.scl,yPos, this.z[x + 1][y]);
+
+        // fill(map(this.z[x][y],-100,100,0,255));
+
+        vertex(xPos, yPos, 0);
+        // vertex(xPos, yPos, this.z[x][y]);
+        // vertex(xPos + this.scl,yPos, this.z[x + 1][y]);
+        vertex(xPos + this.scl,yPos, 0);
       }
       endShape();
     }
   }
+}
+
+class Triangle {
+  constructor(size) {
+    this.size = size;
+    this.position = createVector();
+  }
+
+  render() {
+    fill(127);
+    stroke(0);
+    strokeWeight(2)
+    beginShape();
+    // vertex(mouseX, mouseY,10);
+    // vertex(mouseX + this.size, mouseY, 10);
+    // vertex(mouseX + this.size/2, mouseY - this.size, 10);
+
+    vertex(0, -10,1);
+    vertex(10, 10, 1);
+    vertex(-10, 10, 1);
+    endShape(CLOSE);
+  }
+
 
 }
+
+
+
+
+
+// let scaleFactor = 20;
+// let start = 0
+// let xOff = 0;
+// let yOff = start;
+// function draw() {
+//   background(51);
+
+  
+//   rotateX(PI/3);                   // tilt the “floor”
+//   rotateZ( frameCount * 0.005);     // spin around vertical axis maybe
+
+//   let rows = floor((height) / scaleFactor);  // approximate because WEBGL origin is center
+//   let cols = floor((width) / scaleFactor);
+
+//   yOff = start
+//   for (let y = 0; y < rows - 1; y++) {
+//     xOff = 0
+//     beginShape(TRIANGLE_STRIP);
+//     for (let x = 0; x < cols; x++) {
+//       // vertex(x * scaleFactor - width/2,   y * scaleFactor - height/2);
+//       // vertex(x * scaleFactor - width/2,  (y + 1) * scaleFactor - height/2);
+//       vertex(x * scaleFactor - width/2,   y * scaleFactor - height/2,map(noise(xOff,yOff),0,1,-50,50));
+//       vertex(x * scaleFactor - width/2,  (y + 1) * scaleFactor - height/2, map(noise(xOff,yOff),0,1,-50,-50));
+//       xOff += 0.1
+//     }
+//     yOff += 0.1
+//     endShape();
+//   }
+//   start += 0.01
+// }
+
+
