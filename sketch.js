@@ -4,7 +4,7 @@ let theta = 0;
 
 function setup() {
   createCanvas(640, 400, WEBGL);
-  land = new terrain(20, 800, 400);
+  land = new terrain(20, 400, 400);
   // noFill();
 }
 
@@ -17,7 +17,7 @@ function draw() {
   rotateZ(theta);
   land.render();
   pop();
-  theta += 0.0025;
+  theta += 0.025;
 
 
 }  
@@ -98,6 +98,8 @@ class terrain {
         stroke(0);
         let xPos = x * this.scl - (this.rows) / 2;
         let yPos = y * this.scl - (this.columns) / 2;
+        fill(map(this.z[x][y],-100,100,0,255), 255);
+
         vertex(xPos, yPos, this.z[x][y]);
         vertex(xPos + this.scl,yPos, this.z[x + 1][y]);
       }
